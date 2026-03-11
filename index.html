@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Práctica películas</title>
+    <script defer src="./scripts.js"></script>
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>PRÁCTICA PELICULAS</h1>
+    </header>
+
+    <main>
+      <section class="bienvenida">
+        <h2>Bienvenidos</h2>
+        <p>
+          En esta mini app puedes hacer un seguimiento de las peliculas que has
+          visto ultimamente añadiendolas a una tabla.
+        </p>
+      </section>
+      <section>
+        <h2>Añadir nueva película</h2>
+        <form class="pelis-form" id="pelisform">
+          <label for="titulo">Título</label>
+          <input type="text" id="titulo" name="titulo" required />
+
+          <label for="año">Año</label>
+          <input type="number" id="año" name="año" min="1800" required />
+
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+
+          <label for="imagen">URL de la foto</label>
+          <input type="url" id="imagen" name="imagen" />
+          <img id="preview" />
+          <label for="genero">Género</label>
+          <select id="genero" name="genero">
+            <option value="terror">Terror</option>
+            <option value="accion">Acción</option>
+            <option value="comedia">Comedia</option>
+            <option value="romantica">Romántica</option>
+          </select>
+
+          <button type="enviar">Añadir película</button>
+        </form>
+      </section>
+      <section class="filtros" id="filtros">
+        <h2>Filtros</h2>
+        <select id="filtro-genero" class="filtro-genero">
+          <option value="">Todos los géneros</option>
+          <option value="terror">Terror</option>
+          <option value="accion">Acción</option>
+          <option value="comedia">Comedia</option>
+          <option value="romantica">Romántica</option>
+        </select>
+
+        <input
+          type="text"
+          id="filtro-titulo"
+          class="filtro-titulo"
+          placeholder="Buscar película..."
+        />
+      </section>
+
+      <section>
+        <div id="tabla-peliculas"></div>
+      </section>
+    </main>
+
+    <div id="modal-editar" class="modal">
+      <div class="modal-contenido">
+        <span id="cerrar-modal" class="modal-cerrar">&times;</span>
+        <h2 class="modal-title">Editar Película</h2>
+        <form id="form-editar">
+          <label>Título: <input type="text" id="edit-titulo" required /></label>
+          <label
+            >Año:
+            <input type="number" id="edit-año" min="1888" max="2100" required
+          /></label>
+          <label
+            >Descripción: <textarea id="edit-descripcion" required></textarea>
+          </label>
+          <label
+            >URL Imagen: <input type="url" id="edit-imagen" required
+          /></label>
+          <label
+            >Género:
+            <select id="edit-genero" required>
+              <option value="terror">Terror</option>
+              <option value="accion">Acción</option>
+              <option value="comedia">Comedia</option>
+              <option value="romantica">Romántica</option>
+            </select>
+          </label>
+          <button type="submit">Guardar Cambios</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
