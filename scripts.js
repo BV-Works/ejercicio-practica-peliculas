@@ -52,11 +52,11 @@ function añadirPelicula(event) {
     año,
     descripcion,
     genero,
-    imagen
+    imagen,
   };
 
   peliculas.push(pelicula);
-  preview.src = '';
+  preview.src = "";
   preview.style.display = "none";
   form.reset();
   renderizarTabla();
@@ -68,11 +68,11 @@ function renderizarTabla() {
   const peliculasFiltradas = obtenerPeliculasFiltradas();
 
   if (peliculasFiltradas.length === 0 && peliculas.length !== 0) {
-    console.log("no pelis")
+    console.log("no pelis");
     contenedor.innerHTML = "Ninguna Pelicula corresponde con el filtro actual";
     return;
-  } 
-  
+  }
+
   if (peliculas.length === 0) {
     contenedor.innerHTML = "";
     return;
@@ -117,11 +117,11 @@ function renderizarTabla() {
   contenedor.innerHTML = html;
 
   // eventos de los botones borrar y editar
-  document.querySelectorAll(".borrar").forEach(btn => {
+  document.querySelectorAll(".borrar").forEach((btn) => {
     btn.addEventListener("click", borrarPelicula);
   });
 
-  document.querySelectorAll(".editar").forEach(btn => {
+  document.querySelectorAll(".editar").forEach((btn) => {
     btn.addEventListener("click", editarPelicula);
   });
 }
@@ -132,22 +132,21 @@ filtroGenero.addEventListener("change", renderizarTabla);
 
 filtroTitulo.addEventListener("input", renderizarTabla);
 
-
 function obtenerPeliculasFiltradas() {
+  const generoSeleccionado = filtroGenero?.value ? filtroGenero?.value : "";
+  const textoBusqueda = filtroTitulo?.value
+    ? filtroTitulo?.value.toLowerCase()
+    : "";
 
-  const generoSeleccionado = filtroGenero?.value ? filtroGenero?.value : '';
-  const textoBusqueda = filtroTitulo?.value ? filtroTitulo?.value
-    .toLowerCase() : '';
-
-  return peliculas.filter(pelicula => {
+  return peliculas.filter((pelicula) => {
     const coincideGenero =
       generoSeleccionado === "" || pelicula.genero === generoSeleccionado;
 
-    const coincideTitulo =
-      pelicula.titulo.toLowerCase().includes(textoBusqueda || "");
+    const coincideTitulo = pelicula.titulo
+      .toLowerCase()
+      .includes(textoBusqueda || "");
 
     return coincideGenero && coincideTitulo;
-
   });
 }
 
@@ -157,7 +156,9 @@ function borrarPelicula(event) {
   const index = event.target.dataset.index;
   const pelicula = obtenerPeliculasFiltradas()[index];
 
-  const indiceReal = peliculas.findIndex(p => p.titulo === pelicula.titulo && p.año === pelicula.año);
+  const indiceReal = peliculas.findIndex(
+    (p) => p.titulo === pelicula.titulo && p.año === pelicula.año,
+  );
 
   if (indiceReal > -1) {
     peliculas.splice(indiceReal, 1);
@@ -172,19 +173,21 @@ let indiceEditar = null;
 function editarPelicula(event) {
   const index = event.target.dataset.index;
   const pelicula = obtenerPeliculasFiltradas()[index];
-  indiceEditar = peliculas.findIndex(p => p.titulo === pelicula.titulo && p.año === pelicula.año);
+  indiceEditar = peliculas.findIndex(
+    (p) => p.titulo === pelicula.titulo && p.año === pelicula.año,
+  );
 
   if (indiceEditar === -1) return;
 
   document.getElementById("edit-titulo").value = peliculas[indiceEditar].titulo;
   document.getElementById("edit-año").value = peliculas[indiceEditar].año;
-  document.getElementById("edit-descripcion").value = peliculas[indiceEditar].descripcion;
+  document.getElementById("edit-descripcion").value =
+    peliculas[indiceEditar].descripcion;
   document.getElementById("edit-imagen").value = peliculas[indiceEditar].imagen;
   document.getElementById("edit-genero").value = peliculas[indiceEditar].genero;
 
   document.getElementById("modal-editar").style.display = "flex";
 }
-
 
 document.getElementById("cerrar-modal").addEventListener("click", () => {
   document.getElementById("modal-editar").style.display = "none";
@@ -200,7 +203,7 @@ document.getElementById("form-editar").addEventListener("submit", (e) => {
     año: parseInt(document.getElementById("edit-año").value),
     descripcion: document.getElementById("edit-descripcion").value,
     imagen: document.getElementById("edit-imagen").value,
-    genero: document.getElementById("edit-genero").value
+    genero: document.getElementById("edit-genero").value,
   };
 
   renderizarTabla();
