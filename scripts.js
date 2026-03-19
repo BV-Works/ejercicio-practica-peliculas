@@ -1,41 +1,4 @@
-const yearInput = document.getElementById("year");
-yearInput.max = new Date().getFullYear();
-
-const imgInput = document.getElementById("img");
-const preview = document.getElementById("preview");
-
-const filterTitle = document.getElementById("filter-title");
-const filtergenre = document.getElementById("filter-genre");
-
-// VALIDACION DE LA IMAGEN
-function validateImg(url) {
-  return new Promise((resolve) => {
-    const img = new Image();
-
-    img.onload = () => resolve(true);
-    img.onerror = () => resolve(false);
-
-    img.src = url;
-  });
-}
-
-imgInput.addEventListener("change", async () => {
-  const url = imgInput.value;
-  const esimg = await validateImg(url);
-
-  if (esimg) {
-    preview.src = url;
-    preview.style.display = "block";
-  } else {
-    preview.style.display = "none";
-    alert("La URL no es una img válida");
-  }
-});
-
-// SUBMIT DEL FORMULARIO
-const form = document.getElementById("moviesForm");
-form.addEventListener("submit", addMovie);
-
+// VARIABLES GLOBALES:
 let movies = [
   {
     title: "A Nightmare on Elm Street",
@@ -119,8 +82,79 @@ let movies = [
       "https://pics.filmaffinity.com/a_nightmare_on_elm_street-511303390-mmed.jpg",
   },
 ];
+// FORMULARIO
+const form = document.getElementById("moviesForm");
+// INPUT AÑO FORMULARIO
+const yearInput = document.getElementById("year");
+yearInput.max = new Date().getFullYear();
+// INPUT IMAGEN FORMULARIO
+const imgInput = document.getElementById("img");
+const preview = document.getElementById("preview");
+// FILTROS TABLA
+const filterTitle = document.getElementById("filter-title");
+const filtergenre = document.getElementById("filter-genre");
+// INDICE FICTICIO USADO EN EDITAR PELICULA DE LA TABLA
+let indexEdit = null;
+
+// EVENT LISTENERS:
+// INPUT IMAGEN FORMULARIO
+imgInput.addEventListener("change", async () => {
+  const url = imgInput.value;
+  const esimg = await validateImg(url);
+
+  if (esimg) {
+    preview.src = url;
+    preview.style.display = "block";
+  } else {
+    preview.style.display = "none";
+    alert("La URL no es una img válida");
+  }
+});
+// FILTROS
+filtergenre.addEventListener("change", renderTable);
+filterTitle.addEventListener("input", renderTable);
+
+// SUBMIT DEL FORMULARIO
+form.addEventListener("submit", addMovie);
+
+// EVENTOS DEL MODAL: CERRAR MODAL Y SUBMIT DE EDITAR EN EL MODAL
+document.getElementById("cerrar-modal").addEventListener("click", () => {
+  document.getElementById("modal-edit").style.display = "none";
+});
+
+document.getElementById("form-edit").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  if (indexEdit === null) return;
+
+  movies[indexEdit] = {
+    title: document.getElementById("edit-title").value,
+    year: parseInt(document.getElementById("edit-year").value),
+    description: document.getElementById("edit-description").value,
+    img: document.getElementById("edit-img").value,
+    genre: document.getElementById("edit-genre").value,
+  };
+
+  renderTable();
+  document.getElementById("modal-edit").style.display = "none";
+  indexEdit = null;
+});
 
 
+// FUNCIONES:
+
+// VALIDACION DE LA IMAGEN
+function validateImg(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+
+    img.src = url;
+  });
+}
+// AÑADIR PELICULA
 function addMovie(event) {
   event.preventDefault();
 
@@ -144,13 +178,7 @@ function addMovie(event) {
   form.reset();
   renderTable();
 }
-
-
-renderTable();
-
-
-// LOGICA BORRADO
-
+// BORRAR PELICULA DESDE TABLA
 function deleteMovie(event) {
   const index = event.target.dataset.index;
   const pelicula = getFilteredMovies()[index];
@@ -165,10 +193,7 @@ function deleteMovie(event) {
   }
 }
 
-// LOGICA MODAL EDITAR
-
-let indexEdit = null;
-
+// EDITAR PELICULA DESDE LA TABLA (MOSTRAR MODAL EDITAR)
 function editMovie(event) {
   const index = event.target.dataset.index;
   const pelicula = getFilteredMovies()[index];
@@ -187,29 +212,6 @@ function editMovie(event) {
 
   document.getElementById("modal-edit").style.display = "flex";
 }
-
-document.getElementById("cerrar-modal").addEventListener("click", () => {
-  document.getElementById("modal-edit").style.display = "none";
-});
-
-document.getElementById("form-edit").addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  if (indexEdit === null) return;
-
-  movies[indexEdit] = {
-    title: document.getElementById("edit-title").value,
-    year: parseInt(document.getElementById("edit-year").value),
-    description: document.getElementById("edit-description").value,
-    img: document.getElementById("edit-img").value,
-    genre: document.getElementById("edit-genre").value,
-  };
-
-  renderTable();
-  document.getElementById("modal-edit").style.display = "none";
-  indexEdit = null;
-});
-
 
 // RENDERIZADO table
 function renderTable() {
@@ -276,11 +278,6 @@ function renderTable() {
 }
 
 // LOGICA FILTROS
-
-filtergenre.addEventListener("change", renderTable);
-
-filterTitle.addEventListener("input", renderTable);
-
 function getFilteredMovies() {
   const genreSeleccionado = filtergenre?.value ? filtergenre?.value : "";
   const textoBusqueda = filterTitle?.value
@@ -298,4 +295,8 @@ function getFilteredMovies() {
     return coincidegenre && coincidetitle;
   });
 }
+
+// INICIALIZACION
+
+renderTable();
 
