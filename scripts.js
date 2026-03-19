@@ -159,7 +159,7 @@ function addMovie(event) {
   event.preventDefault();
 
   const title = document.getElementById("title").value;
-  const year = document.getElementById("year").value;
+  const year = parseInt(document.getElementById("year").value);
   const description = document.getElementById("description").value;
   const genre = document.getElementById("genre").value;
   const img = document.getElementById("img").value;
@@ -180,7 +180,7 @@ function addMovie(event) {
 }
 // BORRAR PELICULA DESDE TABLA
 function deleteMovie(event) {
-  const index = event.target.dataset.index;
+  const index = parseInt(event.target.dataset.index);
   const pelicula = getFilteredMovies()[index];
 
   const indiceReal = movies.findIndex(
@@ -234,9 +234,9 @@ function renderTable() {
       <thead class="table-header">
         <tr>
           <th>Título</th>
-          <th>year</th>
+          <th>Año</th>
           <th>Descripción</th>
-          <th>img</th>
+          <th>Imagen</th>
           <th>Género</th>
           <th>Acciones</th>
         </tr>
@@ -250,7 +250,7 @@ function renderTable() {
         <td>${pelicula.title}</td>
         <td>${pelicula.year}</td>
         <td>${pelicula.description}</td>
-        <td class="img-table"><img src="${pelicula.img}"></td>
+        <td class="img-table"><div class="img-wrapper"><img src="${pelicula.img}"></div></td>
         <td>${pelicula.genre}</td>
         <td>
           <button class="edit" data-index="${index}">Editar</button>

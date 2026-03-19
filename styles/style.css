@@ -101,7 +101,6 @@ h2 {
   border-radius: 10px;
   overflow: hidden;
   font-family: inherit;
-  word-break: break-word;
 }
 
 .table-header {
@@ -121,14 +120,23 @@ td, th {
   max-width: 120px;
 }
 
-.img-table {
+.table-body td.img-table {
+  padding: 8px;
+}
+
+.img-wrapper {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .img-table img {
   width: 80px;
   border-radius: 6px;
   margin: auto;
+  object-fit: contain;
+  display: block;
 }
 
 .modal {
