@@ -1,9 +1,10 @@
-# ejercicio-practica-peliculas
 🎬 Práctica Películas
 
 Mini aplicación web para gestionar una lista de películas vistas. Permite añadir, editar, eliminar y filtrar películas de forma dinámica usando JavaScript puro (sin frameworks).
 
-🚀 Funcionalidades
+
+
+🚀 Funcionalidades:
 
 ➕ Añadir nuevas películas
 
@@ -19,7 +20,10 @@ Mini aplicación web para gestionar una lista de películas vistas. Permite aña
 
 📊 Renderizado dinámico en tabla
 
-🛠️ Tecnologías utilizadas
+
+
+
+🛠️ Tecnologías utilizadas:
 
 HTML5
 
@@ -27,14 +31,17 @@ CSS3
 
 JavaScript (Vanilla JS)
 
-📂 Estructura del proyecto
+
+
+📂 Estructura del proyecto:
 /project
 │── index.html
 │── /styles
 │     └── style.css
-│── /scripts
-│     └── scripts.js
-⚙️ Cómo usar
+│── scripts.js
+
+
+⚙️ Cómo usar:
 
 Clona el repositorio o descarga los archivos
 
@@ -42,7 +49,9 @@ Abre index.html en tu navegador
 
 Empieza a añadir películas 🎉
 
-📌 Notas
+
+
+📌 Notas:
 
 Las películas se almacenan en memoria (no persistente)
 
@@ -50,7 +59,9 @@ Al recargar la página, los datos se reinician
 
 Las imágenes se validan mediante URL antes de mostrarse
 
-💡 Posibles mejoras
+
+
+💡 Posibles mejoras:
 
 Guardar datos en localStorage
 
@@ -61,7 +72,3 @@ Mejorar estilos (UI/UX)
 Añadir paginación o ordenación
 
 Backend con base de datos
-
-👨‍💻 Autor
-
-Proyecto realizado como práctica de JavaScript.
