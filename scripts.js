@@ -1,14 +1,14 @@
-const añoInput = document.getElementById("año");
-añoInput.max = new Date().getFullYear();
+const yearInput = document.getElementById("year");
+yearInput.max = new Date().getFullYear();
 
-const imagenInput = document.getElementById("imagen");
+const imgInput = document.getElementById("img");
 const preview = document.getElementById("preview");
 
-const filtroTitulo = document.getElementById("filtro-titulo");
-const filtroGenero = document.getElementById("filtro-genero");
+const filterTitle = document.getElementById("filter-title");
+const filtergenre = document.getElementById("filter-genre");
 
 // VALIDACION DE LA IMAGEN
-function validarImagen(url) {
+function validateImg(url) {
   return new Promise((resolve) => {
     const img = new Image();
 
@@ -19,91 +19,240 @@ function validarImagen(url) {
   });
 }
 
-imagenInput.addEventListener("change", async () => {
-  const url = imagenInput.value;
-  const esImagen = await validarImagen(url);
+imgInput.addEventListener("change", async () => {
+  const url = imgInput.value;
+  const esimg = await validateImg(url);
 
-  if (esImagen) {
+  if (esimg) {
     preview.src = url;
     preview.style.display = "block";
   } else {
     preview.style.display = "none";
-    alert("La URL no es una imagen válida");
+    alert("La URL no es una img válida");
   }
 });
 
 // SUBMIT DEL FORMULARIO
-const form = document.getElementById("pelisform");
-form.addEventListener("submit", añadirPelicula);
+const form = document.getElementById("moviesForm");
+form.addEventListener("submit", addMovie);
 
-peliculas = [];
+let movies = [
+  {
+    title: "A Nightmare on Elm Street",
+    year: 1984,
+    description:
+      "Un asesino ataca a adolescentes a través de sus sueños, donde no pueden escapar.",
+    genre: "terror",
+    img:
+      "https://pics.filmaffinity.com/a_nightmare_on_elm_street-960435841-mmed.jpg",
+  },
+  {
+    title: "A Nightmare on Elm Street 2: Freddy's Revenge",
+    year: 1985,
+    description:
+      "Freddy intenta poseer a un joven para regresar al mundo real.",
+    genre: "terror",
+    img:
+      "https://pics.filmaffinity.com/a_nightmare_on_elm_street_2_freddy_s_revenge-329113889-mmed.jpg",
+  },
+  {
+    title: "A Nightmare on Elm Street 3: Dream Warriors",
+    year: 1987,
+    description:
+      "Un grupo de adolescentes con poderes en sueños se enfrenta a Freddy.",
+    genre: "terror",
+    img:
+      "https://pics.filmaffinity.com/a_nightmare_on_elm_street_3_dream_warriors-725612823-mmed.jpg",
+  },
+  {
+    title: "A Nightmare on Elm Street 4: The Dream Master",
+    year: 1988,
+    description:
+      "Freddy regresa y se enfrenta a una nueva heroína con habilidades especiales.",
+    genre: "terror",
+    img:
+      "https://pics.filmaffinity.com/a_nightmare_on_elm_street_4_the_dream_master-374245138-mmed.jpg",
+  },
+  {
+    title: "A Nightmare on Elm Street 5: The Dream Child",
+    year: 1989,
+    description:
+      "Freddy utiliza los sueños de un bebé no nacido para volver a matar.",
+    genre: "terror",
+    img:
+      "https://pics.filmaffinity.com/a_nightmare_on_elm_street_5_the_dream_child-776011595-mmed.jpg",
+  },
+  {
+    title: "Freddy's Dead: The Final Nightmare",
+    year: 1991,
+    description:
+      "Freddy parece haber acabado con todos los niños de Springwood.",
+    genre: "terror",
+    img:
+      "https://pics.filmaffinity.com/freddy_s_dead_the_final_nightmare_a_nightmare_on_elm_street_6-934501006-mmed.jpg",
+  },
+  {
+    title: "Wes Craven's New Nightmare",
+    year: 1994,
+    description:
+      "Freddy invade el mundo real persiguiendo a los actores de la saga.",
+    genre: "terror",
+    img:
+      "https://pics.filmaffinity.com/wes_craven_s_new_nightmare_aka_a_nightmare_on_elm_street_7-603261504-mmed.jpg",
+  },
+  {
+    title: "Freddy vs. Jason",
+    year: 2003,
+    description:
+      "Freddy manipula a Jason Voorhees para sembrar el terror y recuperar su poder.",
+    genre: "terror",
+    img:
+      "https://pics.filmaffinity.com/freddy_vs_jason-860246573-mmed.jpg",
+  },
+  {
+    title: "A Nightmare on Elm Street",
+    year: 2010,
+    description:
+      "Remake moderno del clásico donde Freddy vuelve a aterrorizar a los jóvenes.",
+    genre: "terror",
+    img:
+      "https://pics.filmaffinity.com/a_nightmare_on_elm_street-511303390-mmed.jpg",
+  },
+];
 
-function añadirPelicula(event) {
+
+function addMovie(event) {
   event.preventDefault();
 
-  const titulo = document.getElementById("titulo").value;
-  const año = document.getElementById("año").value;
-  const descripcion = document.getElementById("descripcion").value;
-  const genero = document.getElementById("genero").value;
-  const imagen = document.getElementById("imagen").value;
+  const title = document.getElementById("title").value;
+  const year = document.getElementById("year").value;
+  const description = document.getElementById("description").value;
+  const genre = document.getElementById("genre").value;
+  const img = document.getElementById("img").value;
 
   const pelicula = {
-    titulo,
-    año,
-    descripcion,
-    genero,
-    imagen,
+    title,
+    year,
+    description,
+    genre,
+    img,
   };
 
-  peliculas.push(pelicula);
+  movies.push(pelicula);
   preview.src = "";
   preview.style.display = "none";
   form.reset();
-  renderizarTabla();
+  renderTable();
 }
 
-// RENDERIZADO TABLA
-function renderizarTabla() {
-  const contenedor = document.getElementById("tabla-peliculas");
-  const peliculasFiltradas = obtenerPeliculasFiltradas();
 
-  if (peliculasFiltradas.length === 0 && peliculas.length !== 0) {
-    console.log("no pelis");
-    contenedor.innerHTML = "Ninguna Pelicula corresponde con el filtro actual";
+renderTable();
+
+
+// LOGICA BORRADO
+
+function deleteMovie(event) {
+  const index = event.target.dataset.index;
+  const pelicula = getFilteredMovies()[index];
+
+  const indiceReal = movies.findIndex(
+    (p) => p.title === pelicula.title && p.year === pelicula.year,
+  );
+
+  if (indiceReal > -1) {
+    movies.splice(indiceReal, 1);
+    renderTable();
+  }
+}
+
+// LOGICA MODAL EDITAR
+
+let indexEdit = null;
+
+function editMovie(event) {
+  const index = event.target.dataset.index;
+  const pelicula = getFilteredMovies()[index];
+  indexEdit = movies.findIndex(
+    (p) => p.title === pelicula.title && p.year === pelicula.year,
+  );
+
+  if (indexEdit === -1) return;
+
+  document.getElementById("edit-title").value = movies[indexEdit].title;
+  document.getElementById("edit-year").value = movies[indexEdit].year;
+  document.getElementById("edit-description").value =
+    movies[indexEdit].description;
+  document.getElementById("edit-img").value = movies[indexEdit].img;
+  document.getElementById("edit-genre").value = movies[indexEdit].genre;
+
+  document.getElementById("modal-edit").style.display = "flex";
+}
+
+document.getElementById("cerrar-modal").addEventListener("click", () => {
+  document.getElementById("modal-edit").style.display = "none";
+});
+
+document.getElementById("form-edit").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  if (indexEdit === null) return;
+
+  movies[indexEdit] = {
+    title: document.getElementById("edit-title").value,
+    year: parseInt(document.getElementById("edit-year").value),
+    description: document.getElementById("edit-description").value,
+    img: document.getElementById("edit-img").value,
+    genre: document.getElementById("edit-genre").value,
+  };
+
+  renderTable();
+  document.getElementById("modal-edit").style.display = "none";
+  indexEdit = null;
+});
+
+
+// RENDERIZADO table
+function renderTable() {
+  const contenedor = document.getElementById("table-Movies");
+  const filteredMovies = getFilteredMovies();
+
+  if (filteredMovies.length === 0 && movies.length !== 0) {
+    console.log("no movies");
+    contenedor.innerHTML = "Ninguna Pelicula corresponde con el filter actual";
     return;
   }
 
-  if (peliculas.length === 0) {
+  if (movies.length === 0) {
     contenedor.innerHTML = "";
     return;
   }
 
   let html = `
-    <table border="1" class="tabla">
-      <thead class="tabla-header">
+    <table border="1" class="table">
+      <thead class="table-header">
         <tr>
           <th>Título</th>
-          <th>Año</th>
+          <th>year</th>
           <th>Descripción</th>
-          <th>Imagen</th>
+          <th>img</th>
           <th>Género</th>
           <th>Acciones</th>
         </tr>
       </thead>
-      <tbody class="tabla-body">
+      <tbody class="table-body">
   `;
 
-  peliculasFiltradas.forEach((pelicula, index) => {
+  filteredMovies.forEach((pelicula, index) => {
     html += `
       <tr>
-        <td>${pelicula.titulo}</td>
-        <td>${pelicula.año}</td>
-        <td>${pelicula.descripcion}</td>
-        <td class="img-tabla"><img src="${pelicula.imagen}" width="80"></td>
-        <td>${pelicula.genero}</td>
+        <td>${pelicula.title}</td>
+        <td>${pelicula.year}</td>
+        <td>${pelicula.description}</td>
+        <td class="img-table"><img src="${pelicula.img}"></td>
+        <td>${pelicula.genre}</td>
         <td>
-          <button class="editar" data-index="${index}">Editar</button>
-          <button class="borrar" data-index="${index}">Borrar</button>
+          <button class="edit" data-index="${index}">Editar</button>
+          <button class="delete" data-index="${index}">Borrar</button>
         </td>
       </tr>
     `;
@@ -117,96 +266,36 @@ function renderizarTabla() {
   contenedor.innerHTML = html;
 
   // eventos de los botones borrar y editar
-  document.querySelectorAll(".borrar").forEach((btn) => {
-    btn.addEventListener("click", borrarPelicula);
+  document.querySelectorAll(".delete").forEach((btn) => {
+    btn.addEventListener("click", deleteMovie);
   });
 
-  document.querySelectorAll(".editar").forEach((btn) => {
-    btn.addEventListener("click", editarPelicula);
+  document.querySelectorAll(".edit").forEach((btn) => {
+    btn.addEventListener("click", editMovie);
   });
 }
 
 // LOGICA FILTROS
 
-filtroGenero.addEventListener("change", renderizarTabla);
+filtergenre.addEventListener("change", renderTable);
 
-filtroTitulo.addEventListener("input", renderizarTabla);
+filterTitle.addEventListener("input", renderTable);
 
-function obtenerPeliculasFiltradas() {
-  const generoSeleccionado = filtroGenero?.value ? filtroGenero?.value : "";
-  const textoBusqueda = filtroTitulo?.value
-    ? filtroTitulo?.value.toLowerCase()
+function getFilteredMovies() {
+  const genreSeleccionado = filtergenre?.value ? filtergenre?.value : "";
+  const textoBusqueda = filterTitle?.value
+    ? filterTitle?.value.toLowerCase()
     : "";
 
-  return peliculas.filter((pelicula) => {
-    const coincideGenero =
-      generoSeleccionado === "" || pelicula.genero === generoSeleccionado;
+  return movies.filter((pelicula) => {
+    const coincidegenre =
+      genreSeleccionado === "" || pelicula.genre === genreSeleccionado;
 
-    const coincideTitulo = pelicula.titulo
+    const coincidetitle = pelicula.title
       .toLowerCase()
       .includes(textoBusqueda || "");
 
-    return coincideGenero && coincideTitulo;
+    return coincidegenre && coincidetitle;
   });
 }
 
-// LOGICA BORRADO
-
-function borrarPelicula(event) {
-  const index = event.target.dataset.index;
-  const pelicula = obtenerPeliculasFiltradas()[index];
-
-  const indiceReal = peliculas.findIndex(
-    (p) => p.titulo === pelicula.titulo && p.año === pelicula.año,
-  );
-
-  if (indiceReal > -1) {
-    peliculas.splice(indiceReal, 1);
-    renderizarTabla();
-  }
-}
-
-// LOGICA MODAL EDITAR
-
-let indiceEditar = null;
-
-function editarPelicula(event) {
-  const index = event.target.dataset.index;
-  const pelicula = obtenerPeliculasFiltradas()[index];
-  indiceEditar = peliculas.findIndex(
-    (p) => p.titulo === pelicula.titulo && p.año === pelicula.año,
-  );
-
-  if (indiceEditar === -1) return;
-
-  document.getElementById("edit-titulo").value = peliculas[indiceEditar].titulo;
-  document.getElementById("edit-año").value = peliculas[indiceEditar].año;
-  document.getElementById("edit-descripcion").value =
-    peliculas[indiceEditar].descripcion;
-  document.getElementById("edit-imagen").value = peliculas[indiceEditar].imagen;
-  document.getElementById("edit-genero").value = peliculas[indiceEditar].genero;
-
-  document.getElementById("modal-editar").style.display = "flex";
-}
-
-document.getElementById("cerrar-modal").addEventListener("click", () => {
-  document.getElementById("modal-editar").style.display = "none";
-});
-
-document.getElementById("form-editar").addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  if (indiceEditar === null) return;
-
-  peliculas[indiceEditar] = {
-    titulo: document.getElementById("edit-titulo").value,
-    año: parseInt(document.getElementById("edit-año").value),
-    descripcion: document.getElementById("edit-descripcion").value,
-    imagen: document.getElementById("edit-imagen").value,
-    genero: document.getElementById("edit-genero").value,
-  };
-
-  renderizarTabla();
-  document.getElementById("modal-editar").style.display = "none";
-  indiceEditar = null;
-});

@@ -25,7 +25,7 @@ header {
 }
 
 main {
-  width: 70%;
+  width: 80%;
   margin: auto;
   background: white;
   padding: 20px;
@@ -41,7 +41,7 @@ h2 {
   margin-bottom: 10px;
 }
 
-.pelis-form {
+.movies-form {
   width: 100%;
   margin: 2rem auto;
   display: flex;
@@ -50,11 +50,11 @@ h2 {
   font-family: Arial, sans-serif;
 }
 
-.pelis-form input,
-.pelis-form textarea,
-.pelis-form select,
-.filtro-genero,
-.filtro-titulo {
+.movies-form input,
+.movies-form textarea,
+.movies-form select,
+.filter-genre,
+.filter-title {
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -66,15 +66,15 @@ h2 {
   display: none;
 }
 
-.pelis-form textarea {
+.movies-form textarea {
   resize: none;
 }
 
-.pelis-form select {
+.movies-form select {
   border-radius: 8px;
 }
 
-.pelis-form button {
+.movies-form button {
   margin-top: 1rem;
   padding: 0.7rem;
   border: none;
@@ -85,42 +85,48 @@ h2 {
   cursor: pointer;
 }
 
-.pelis-form button:hover {
+.movies-form button:hover {
   background: #555;
 }
 
-#tabla-peliculas {
+#table-Movies {
   overflow: auto;
 }
 
-.tabla {
+.table {
   width: 100%;
-  border-collapse: separate;
+  border-collapse: collapse;  
   border-spacing: 0;
   border: 1px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
   font-family: inherit;
+  word-break: break-word;
 }
 
-.tabla-header {
+.table-header {
   background-color: pink;
 }
 
-.tabla-header th,
-.tabla-body td {
+td, th {
+  vertical-align: middle;
+}
+
+.table-header th,
+.table-body td {
   padding: 0.75rem 1rem;
   border-bottom: 1px solid #ccc;
   border-right: 1px solid #ccc;
   text-align: left;
+  max-width: 120px;
 }
 
-.img-tabla {
+.img-table {
   display: flex;
 }
 
-.img-tabla img {
-  width: 150px;
+.img-table img {
+  width: 80px;
   border-radius: 6px;
   margin: auto;
 }
@@ -158,26 +164,26 @@ h2 {
   cursor: pointer;
 }
 
-#form-editar input,
-#form-editar select,
-#form-editar textarea {
+#form-edit input,
+#form-edit select,
+#form-edit textarea {
   width: 100%;
   padding: 0.5rem;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
 
-#form-editar textarea {
+#form-edit textarea {
   resize: none;
 }
 
-#form-editar label {
+#form-edit label {
   height: 100%;
   display: block;
   margin: 0.5rem;
 }
 
-#form-editar button {
+#form-edit button {
   padding: 0.6rem 1rem;
   border-radius: 6px;
   border: none;
