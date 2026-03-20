@@ -2,7 +2,7 @@
 
 Mini aplicación web para gestionar una lista de películas vistas. Permite añadir, editar, eliminar y filtrar películas de forma dinámica usando JavaScript puro (sin frameworks).
 
-
+Desplegado en: https://bv-works.github.io/ejercicio-practica-peliculas/
 
 🚀 Funcionalidades:
 
